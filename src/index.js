@@ -4,18 +4,27 @@ import './index.css';
 
 
 // The Square components are "controlled components". The Board component controls what happens to them.
-class Square extends React.Component {
+// class Square extends React.Component {
+//
+//   render() {
+//     return (
+//       <button
+//         className="square"
+//         onClick={() => this.props.onClick()}>
+//         {/* TODO */}
+//       {this.props.value}
+//       </button>
+//     );
+//   }
+// }
 
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}>
-        {/* TODO */}
-      {this.props.value}
-      </button>
-    );
-  }
+// Functional components only include a render method with data passed in as props
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onClick}>
+      {props.value}
+    </button>
+  )
 }
 
 class Board extends React.Component {
@@ -24,15 +33,17 @@ class Board extends React.Component {
     super(props);
 
     this.state = {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      xIsNext: true
     }
   }
 
   handleClick(i) {
     const squares = this.state.squares.slice();
-    squares[i] = 'X';
+    squares[i] = this.state.xIsNext ? 'X' : 'O'
     this.setState({
-      squares: squares
+      squares: squares,
+      xIsNext: !this.state.xIsNext
     });
   }
 
@@ -47,7 +58,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next Player: ' + (this.state.xIsNext ? 'X' : 'O')
 
     return (
       <div>
